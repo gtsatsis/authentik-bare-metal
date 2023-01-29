@@ -1,11 +1,9 @@
-exit # leave su - authentik
-
-cat << EOF > /etc/systemd/system/authentik-server.service
+tee /etc/systemd/system/authentik-server.service > /dev/null << EOF
 [Unit]
 Description = Authentik Server (web/api/sso)
 
 [Service]
-ExecStart=/bin/sh -c 'source /opt/authentik/src/.venv/bin/activate && python -m lifecycle.migrate && /opt/authentik/src/authentik-server'
+ExecStart=/bin/bash -c 'source /opt/authentik/src/.venv/bin/activate && python -m lifecycle.migrate && /opt/authentik/src/authentik-server'
 WorkingDirectory=/opt/authentik/src
 
 User=authentik
@@ -18,7 +16,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 
-cat << EOF > /etc/systemd/system/authentik-worker.service
+tee /etc/systemd/system/authentik-worker.service > /dev/null << EOF
 [Unit]
 Description = Authentik Worker (background tasks)
 
